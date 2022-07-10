@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import HomeItem from "./HomeItem";
-import sample from "./sample.json"
 
 export default function Home(props) {
+  const [data,setData] = useState({});
+  const [loading,setLoading] = useState(true);
   let bool = false
-  const handleClick=()=>{
-    let url = urlValiadtor();
+  const hostname = "http://localhost:8000/";
+
+  const handleClick= async (e)=>{
+    // let url = urlValiadtor();
+    // localStorage.setItem('url',url)
+    const uri = hostname;
+    setLoading(true);
+    const response = await fetch(uri, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+      },});
+      let json = await response.json();
+      setData(json)
+      setLoading(false);
+      console.log(data.Data);
   }
+
 
   const urlValiadtor = ()=>{
     let ele = document.querySelector('input');
@@ -21,6 +37,7 @@ export default function Home(props) {
     else{
       ele.style.border='1px solid red'
       console.log('wrong url');
+      return null
     }
   }
 
@@ -35,10 +52,9 @@ export default function Home(props) {
     </div>
     </div>
     <div className="container">
-      {sample.all_links.map((sampleItem,index)=>{
-        return (<HomeItem key = {index} sampleItem={sampleItem}/>)
-      })
-        }
+      {!loading && data.Data.map((dataItem,index)=>{
+        return (<HomeItem key = {index} dataItem={dataItem}/>)
+      })}
     </div>
     </>
   );
