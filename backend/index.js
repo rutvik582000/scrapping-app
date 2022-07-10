@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const scrapingbee = require("scrapingbee");
 var cors = require('cors')
+var cheerio = require('cheerio')
 
 app.use(cors())
 app.use(express.json())
@@ -32,7 +33,7 @@ async function get(url) {
               output: "@href",
             },
             // "Locale" :,
-            "Published-date": "time",
+            "PublishedDate": "time",
           },
         },
       },
@@ -40,8 +41,11 @@ async function get(url) {
   });
   return response;
 }
+
 let textFromURL = "";
-get("https://www.scrapingbee.com/blog/")
+// localStorage.setItem('url','https://www.scrapingbee.com/blog/')
+//localStorage.getItem(url)
+get('https://www.scrapingbee.com/blog/')
   .then(function (response) {
     var decoder = new TextDecoder();
     textFromURL = decoder.decode(response.data);
@@ -51,6 +55,12 @@ get("https://www.scrapingbee.com/blog/")
 app.use("/", (req, res) => {
   res.send(textFromURL);
 });
+// const loadData = cheerio.load('<h2 class="title">Hello world</h2>');
+
+// loadData('h2.title').text('Hello there!');
+// loadData('h2').addClass('welcome');
+
+// loadData.html();
 
 app.listen(8000, () => {
   console.log("listning");

@@ -8,8 +8,8 @@ export default function Home(props) {
   const hostname = "http://localhost:8000/";
 
   const handleClick= async (e)=>{
-    // let url = urlValiadtor();
-    // localStorage.setItem('url',url)
+    let url = urlValiadtor();
+    localStorage.setItem('url',url)
     const uri = hostname;
     setLoading(true);
     const response = await fetch(uri, {
@@ -51,11 +51,14 @@ export default function Home(props) {
       <button className="btn btn-primary btn-sm" onClick={handleClick}>Fetch</button>
     </div>
     </div>
-    <div className="container">
-      {!loading && data.Data.map((dataItem,index)=>{
-        return (<HomeItem key = {index} dataItem={dataItem}/>)
-      })}
+    <div className="container mt-3">
+
+    <div className="row">
+      {/* {!loading && data.Data.map((dataItem,index)=>{
+        return (<div className="col-md-4" key = {index}><HomeItem dataItem={dataItem}/></div>)
+      })} */}
     </div>
+      </div>
     </>
   );
 }
